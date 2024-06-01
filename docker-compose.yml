@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  api_gateway:
+    platform: linux/x86_64
+    build: ./test_app
+    image: test_app
+    env_file:
+      - ./.env
+    ports:
+      - "8084:8084"
+    command: [ "python3.9", "__main__.py" ]

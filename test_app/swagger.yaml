@@ -1,0 +1,138 @@
+openapi: 3.0.0
+
+servers:
+  - url: https://172.17.0.1/internal/question_generation
+
+info:
+  version: 1.0.0
+  title: Compliance Services API Gateway
+  contact:
+    email: sanyam12sks@gmail.com
+
+paths:
+  /analyse/analyse_with_top:
+    post:
+      summary: Send website URL for Compliance Testing
+      description: Send website URL for Compliance Testing
+      tags:
+        - URL
+      operationId: endpoints.core.analyse_with_top
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/analyse_with_top'
+      responses:
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /analyse/scorecard:
+    post:
+      summary: Send website URL for Compliance Testing
+      description: Send website URL for Compliance Testing
+      tags:
+        - URL
+      operationId: endpoints.core.coaching_with_llm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/analyse_with_llm_score'
+      responses:
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /analyse/topic:
+    post:
+      summary: Send website URL for Compliance Testing
+      description: Send website URL for Compliance Testing
+      tags:
+        - URL
+      operationId: endpoints.core.analyse_with_llm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/analyse_with_llm_request'
+      responses:
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+  /analyse/multi:
+    post:
+      summary: Send website URL for Compliance Testing
+      description: Send website URL for Compliance Testing
+      tags:
+        - URL
+      operationId: endpoints.core.analyse_with_multi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/analyse_with_llm_request'
+      responses:
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /analyse/chat:
+    post:
+      summary: Send website URL for Compliance Testing
+      description: Send website URL for Compliance Testing
+      tags:
+        - URL
+      operationId: endpoints.core.analyse_with_llm_chat
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/analyse_with_llm_request'
+      responses:
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                type: object
+components:
+  schemas:
+    analyse_with_llm_request:
+      type: object
+      required:
+        - question
+      properties:     
+        url:
+          type: string
+    analyse_with_llm_score:
+      type: object
+      required:
+        - question
+        - marks
+        - answer
+        - final_answer
+      properties:
+        url:
+          type: string
+    analyse_with_top:
+      type: object
+      required:
+        - number
