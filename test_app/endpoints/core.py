@@ -19,6 +19,7 @@ from transformers import pipeline
 #from unsloth import FastLanguageModel
 #from transformers import AutoModelForCausalLM, AutoTokenizer
 
+genai.configure(api_key="AIzaSyDdjBBBmOSGVVZLkqt4a52LjbeHUINvhC0")
 generation_config = {
   "temperature": 0.9,
   "top_p": 1,
@@ -346,7 +347,7 @@ def analyse_with_llm_chat(body):
     Tip 5: Gradually reduce reliance on notes and formula sheets.
     Tip 6: Explain what you're doing.
     Tip 7: Don't throw away easy marks.
-    Tip 8: Build up to exam conditions.    
+    Tip 8: Build up to exam conditions.
     Tip 9: Keep an eye on the clock.
     Tip 10: You don't have to do the questions in order.
     Tip 11: Look beyond your exam board.
@@ -516,7 +517,7 @@ def doc_builder_chat():
     doc = Document(doc)
 
     return doc
-
+'''
 def index_builder_coaching(model):
 
     docs = []
@@ -542,7 +543,7 @@ def index_builder_coaching(model):
                                     prompt_helper=prompt_helper)
 
     return index
-
+'''
 
 def index_builder(model):
 
