@@ -19,8 +19,6 @@ from transformers import pipeline
 #from unsloth import FastLanguageModel
 #from transformers import AutoModelForCausalLM, AutoTokenizer
 
-genai.configure(api_key="AIzaSyDdjBBBmOSGVVZLkqt4a52LjbeHUINvhC0")
-
 generation_config = {
   "temperature": 0.9,
   "top_p": 1,
