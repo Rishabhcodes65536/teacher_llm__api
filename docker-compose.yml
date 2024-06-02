@@ -9,3 +9,22 @@ services:
     ports:
       - "8084:8084"
     command: [ "python3.9", "__main__.py" ]
+  ollama:
+    container_name: ollama
+    image: ollama/ollama:rocm
+    ports:
+      - 11434:11434
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            capabilities: ["gpu"]
+            count: all
+    volumes:
+      - ollama:/root/.ollama
+    restart: always
+
+
+volumes:
+    ollama:

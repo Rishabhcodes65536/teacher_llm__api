@@ -244,25 +244,20 @@ def coaching_with_llm_2(body):
     marks = body.get("marks")
     final_answer = body.get("final_answer")
 
-    query_1 = f"Solve this question: {student_question}. Store the response in a JSON format where you have {{'solution_steps_with_answer':'', 'final_answer':''}}"
+    query_1 = f"Solve this question: {student_question}. Store the response in a JSON format where you have {{'solution_steps': solution_string, 'final_answer':final_answer_string}} Make sure the solution_steps are brief. solution_steps and final_answer are strings.  Return a valid json and nothing else."
     content = query_1
     response = make_api_request(content)
-
+    print("first response", response)
     try:
         json_response_1 = extract_json(response)
-        if json_response_1:
-            json_data_1 = json.loads(json_response_1)
-        else:
-            json_data_1 = {}
+        json_data_1 = json.loads(json_response_1)
     except:
         response = make_api_request(content)
+        print("second response",response)
         json_response_1 = extract_json(response)
-        if json_response_1:
-            json_data_1 = json.loads(json_response_1)
-        else:
-            json_data_1 = {}
+        json_data_1 = json.loads(json_response_1)
 
-    model_solution = json_data_1["solution_steps_with_answer"]
+    model_solution = json_data_1["solution_steps"]
     model_final = json_data_1["final_answer"]
 
     final_query = (
@@ -270,27 +265,23 @@ def coaching_with_llm_2(body):
         f"Here is the Correct Solution: {model_solution}\n"
         f"Maximum marks is {marks}\n"
         f"Student have given this solution: {answer}\n"
-        f"Check if the student solution is correct and then respond a JSON like "
-        f"{{'marks_awarded_to_student': , 'feedback':''}}. Do not use any apostrophe in feedback.Answer only in JSON format so it is easier to extract"
+        f"Check if the student solution is correct and award marks based on correctness of student answer then respond a JSON like "
+        f"{{'marks_awarded_to_student': , 'feedback':''}}. Do not use any apostrophe in feedback.Answer only in JSON format so it is easier to extract. Do not return nothing apart from Json."
     )
     content = final_query
 
     try:
         response = make_api_request(content)
+        print("third response", response)
         json_response = extract_json(response)
-        if json_response:
-            data = json.loads(json_response)
-        else:
-            data = None
+        data = json.loads(json_response)
     except Exception as e:
         print(f"Exception: {e}")
         response = make_api_request(content)
         json_response = extract_json(response)
-        if json_response:
-            data = json.loads(json_response)
-        else:
-            data = None
-    print(data)
+        data = json.loads(json_response)
+        print("fourth response", response)
+
     if data:
         marks_awarded_to_student = data.get('marks_awarded_to_student', 0)
     else:
@@ -307,24 +298,19 @@ def coaching_with_llm_2(body):
     elif data["marks_awarded_to_student"] != marks:
         comparison_query = (
             f"First answer: {final_answer} and second answer: {model_final}. Compare and check whether the two answers match. "
-            f"If they do, then return a JSON {{'total_marks': {marks}}}. Otherwise, return total_marks as {marks_awarded_to_student}. "
-            f"Remember only return a valid JSON {{'total_marks'}}"
+            f"If they do, then return a JSON {{'total_marks': {marks}}}. Otherwise, return total_marks as {{'total_marks': 0}} \n"
+            f"Remember only return a valid JSON"
         )
         content= comparison_query
-
-        response = make_api_request(content)
-        json_response = extract_json(response)
-        if json_response:
+        try:
+            response = make_api_request(content)
+            print("last query", response)
+            json_response = extract_json(response)
             comparison_data = json.loads(json_response)
             data["marks_awarded_to_student"] = comparison_data.get("total_marks", marks_awarded_to_student)
-
-    return {
-        "status": 1,
-        "response": data,
-        "question": student_question,
-        "student_answer": answer,
-    }
-
+        except:
+            print("Query failed")
+    return {"status": 1, "response":data,"question":student_question, "student_answer":answer}
 
 def store_interaction(question, response):
     interaction = {"question": question, "response": response}
@@ -400,7 +386,7 @@ def analyse_with_llm(body):
 
     final_query = (
         f"Here is the topic and subtopic asked by the student: {topic} and {subtopic}. "
-        f"Assign marks to it as well. Try to generate a new topic of the user question. "
+        f"Assign marks to it as well. Try to generate a new topic of the user question. Make sure the marks are random and always less than 6 "
         f"Past Question was {past_question}\n"
         "Answer the question in the JSON format with {'question': 'your_generated_question_here', 'marks': your_assigned_marks}. "
         "Ensure that the response is a valid JSON object and do not use any apostrophe in the question."
@@ -1014,6 +1000,7 @@ def query_builder_multi(index, topic, past_question):
 '''
 def extract_json(response):
     # Find the starting index of JSON
+    response = response.replace('\n', '')
     start_index = response.find("{")
     # Find the ending index of JSON
     end_index = response.rfind("}") + 1
@@ -1040,12 +1027,11 @@ def analyse_with_multi(body):
         response = make_api_request(content)
         # Extract JSON part from the response
         json_response = extract_json(response)
-        print(json_response)
-        if json_response:
-            data = json.loads(json_response)
-        else:
-            data = None
+        data = json.loads(json_response)
     except:
-        response = make_api_request(content)
+        response = make_api_request(content)  
+        json_response = extract_json(response)
+        data = json.loads(json_response)
+        
     print(response)
     return {"status": 1, "response": data}
