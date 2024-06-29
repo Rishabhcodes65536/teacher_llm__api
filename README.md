@@ -50,6 +50,7 @@ kill -9 <pid>
 No internet is required XD.Flaunt your Prompting skills to mine creativity!!
 
 ``` bash
+ollama serve
 ollama run llama3
 ```
 
