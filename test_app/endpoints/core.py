@@ -19,7 +19,7 @@ from transformers import pipeline
 #from unsloth import FastLanguageModel
 #from transformers import AutoModelForCausalLM, AutoTokenizer
 
-genai.configure(api_key="AIzaSyDdjBBBmOSGVVZLkqt4a52LjbeHUINvhC0")
+genai.configure(api_key="Your api key")
 generation_config = {
   "temperature": 0.9,
   "top_p": 1,
@@ -56,7 +56,7 @@ text_generator = pipeline(
 )'''
 '''
 config = {
-    "hugging_face_username":"Rishabh-sucks-at-code",
+    "hugging_face_username":"",
     "model_config": {
         "base_model":"unsloth/llama-3-8b-Instruct-bnb-4bit", # The base model
         "finetuned_model":"llama-3-8b-Instruct-bnb-4bit-aiaustin-demo", # The finetuned model
@@ -156,13 +156,13 @@ if config.get("lora_config"):
 '''
 
 # Connect to MongoDB
-client = MongoClient("mongodb+srv://sanyam12sks:jP4J5DQXdcSKPwGd@cluster0.8g19w8t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+client = MongoClient("")
 db = client['knolly']  # Replace 'your_database' with your actual database name
 collection = db['doubts']
 import json
 
 def make_api_request(content):
-    url = "http://20.42.62.249:11434/api/chat"
+    url = ""
     headers = {
         "Content-Type": "application/json"
     }

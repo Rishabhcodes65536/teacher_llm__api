@@ -11,7 +11,7 @@ import google.generativeai as genai
 import json
 import random 
 
-genai.configure(api_key="AIzaSyDdjBBBmOSGVVZLkqt4a52LjbeHUINvhC0")
+genai.configure(api_key="")
 
 generation_config = {
   "temperature": 0.9,
@@ -44,7 +44,7 @@ model = genai.GenerativeModel(model_name="gemini-1.0-pro",                      
 
 
 # Connect to MongoDB
-client = MongoClient("mongodb+srv://sanyam12sks:jP4J5DQXdcSKPwGd@cluster0.8g19w8t.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+client = MongoClient("")
 db = client['knolly']  # Replace 'your_database' with your actual database name
 collection = db['doubts']
 import json

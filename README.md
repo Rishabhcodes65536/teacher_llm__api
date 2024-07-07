@@ -77,8 +77,12 @@ docker-compose up -d --build ollama
 7. **Checking & running the container**
 ```bash
  docker ps
- docker run -d -v ollama:/root/.ollama -p 8084:8084 --name ollama ollama/ollama
+ docker run -d --gpus=all -v ollama:/root/.ollama -p 8084:8084 --name ollama ollama/ollama
  ```
+7. (a)**(Optional)Running it locally
+```bash
+  docker exec -it ollama ollama run llama3
+```
 
  8. **Starting the api services**
  ```bash
